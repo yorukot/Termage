@@ -54,7 +54,6 @@ func terminalSize() (width, height int, err error) {
 func imageToBytes(img image.Image, format string) ([]byte, error) {
 	var buffer bytes.Buffer
 
-	// 选择合适的编码器
 	switch format {
 	case "jpeg":
 		err := jpeg.Encode(&buffer, img, nil)
