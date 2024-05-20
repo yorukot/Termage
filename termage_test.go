@@ -5,11 +5,19 @@ import (
 	"testing"
 )
 
-func TestAdd(t *testing.T) {
-	imageString, err := ImagePreview("./testFile/computer.png", 100, 100, false, false)
+func TestAddImagePreview(t *testing.T) {
+	imageString, err := ImagePreview("./testFile/1580624931717m.jpg", 10, 10, false)
 	if err != nil {
-		fmt.Println(err)
+		t.Errorf("Failed to generate image preview: %v", err)
 		return
 	}
-	fmt.Print(imageString)
+	fmt.Println(imageString)
+}
+
+func TestAddResize(t *testing.T) {
+	_, err := resizeTest("./testFile/1580624931717m.jpg", 70, 50, false)
+	if err != nil {
+		t.Errorf("Failed to resize image: %v", err)
+		return
+	}
 }

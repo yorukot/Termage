@@ -1,21 +1,14 @@
 package termage
 
 import (
-	"encoding/base64"
-	"fmt"
+	"bytes"
 	"image"
 	"os"
+
+	"github.com/BourgeoisBear/rasterm"
 )
 
-const (
-	chunck_size = 4096
-	start       = "\x1b_G"
-	end         = "\x1b\\"
-)
-
-func showImageInKitty(path string, width, height int, noresize, fullwidth bool) (imageString string, err error) {
-	width *= 10
-	height *= 10
+func showImageInKittyA(path string, maxWidth, maxHeight int, noresize bool) (imageString string, err error) {
 
 	imageFile, err := os.Open(path)
 	if err != nil {
@@ -28,23 +21,36 @@ func showImageInKitty(path string, width, height int, noresize, fullwidth bool) 
 		return "", err
 	}
 
-	img, err = resizeImage(img, width, height, noresize, fullwidth)
+	img, err = resizeImage(img, maxWidth, maxHeight, noresize)
 	if err != nil {
 		return "", err
 	}
 
-	imageFormat, err := getImageFormat(img)
+	var buff bytes.Buffer
+	err = rasterm.KittyWriteImage(&buff, img, rasterm.KittyImgOpts{})
 	if err != nil {
 		return "", err
 	}
 
-	imageBytes, err := imageToBytes(img, imageFormat)
+	return buff.String(), nil
+}
+
+func resizeTest(path string, maxWidth, maxHeight int, noresize bool) (imageString string, err error) {
+
+	imageFile, err := os.Open(path)
 	if err != nil {
 		return "", err
 	}
-	
-	imageBase64 := base64.StdEncoding.EncodeToString(imageBytes)
+	defer imageFile.Close()
 
-	imageString = fmt.Sprintf("%sa=T,f=100;%s%s", start, imageBase64, end)
-	return imageString, nil
+	img, _, err := image.Decode(imageFile)
+	if err != nil {
+		return "", err
+	}
+
+	_, err = resizeImage(img, maxWidth, maxHeight, noresize)
+	if err != nil {
+		return "", err
+	}
+	return "", err
 }
