@@ -1,4 +1,4 @@
-module github.com/MHNightCat/Termage
+module github.com/yorukot/Termage
 
 go 1.22.2
 
