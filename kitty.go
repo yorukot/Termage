@@ -41,6 +41,8 @@ func resizeTest(path string, maxWidth, maxHeight int, noresize bool) (imageStrin
 	if err != nil {
 		return "", err
 	}
+	
+	return "", err
 
 	// In case you might want to do something with the resized image
 	// For testing purposes we'll just return its dimensions as a string
