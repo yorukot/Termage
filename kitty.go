@@ -37,7 +37,7 @@ func resizeTest(path string, maxWidth, maxHeight int, noresize bool) (imageStrin
 	}
 
 	//change _ to resizedImg in case you want to get back the img
-	_, err = resizeImage(img, maxWidth, maxHeight, noresize)
+	_, err = resizeImage(imageFile, maxWidth, maxHeight, noresize)
 	if err != nil {
 		return "", err
 	}
